@@ -1,0 +1,21 @@
+composer install--ignore-platform-reqs
+
+php artisan key:generate
+php artisan migrate
+
+
+php artisan serve   
+
+
+php artisan storage:link
+
+
+composer create-project laravel/laravel kocm
+composer require maatwebsite/excel --ignore-platform-reqs
+composer require maatwebsite/excel
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+php artisan key:generate
+php artisan migarte
+php artisan serve   
+npm run dev
