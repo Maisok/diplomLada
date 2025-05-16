@@ -31,20 +31,67 @@ use Illuminate\Http\Request;
 use App\Models\Service;
     
 
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function() {
 
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+
+    Route::prefix('/services')->group(function() {
+        Route::get('/', [ServiceController::class, 'index'])->name('admin.services.index');
+        Route::post('/', [ServiceController::class, 'store'])->name('admin.services.store');
+        Route::get('/{service}/edit', [ServiceController::class, 'edit'])->name('admin.services.edit');
+        Route::put('/{service}', [ServiceController::class, 'update'])->name('admin.services.update');
+        Route::delete('/{service}', [ServiceController::class, 'destroy'])->name('admin.services.destroy');
+    });
+
+    Route::get('/export/appointments', [\App\Http\Controllers\ExportController::class, 'exportAllAppointments'])
+    ->name('export.appointments');
     
+    Route::get('/export/new-appointments', [\App\Http\Controllers\ExportController::class, 'exportNewAppointments'])
+        ->name('export.new-appointments');
+    
+    Route::get('/specialists', [SpecialistController::class, 'index'])->name('admin.specialists.index');
+    Route::get('/specialists/create', [SpecialistController::class, 'create'])->name('admin.specialists.create');
+    Route::post('/specialists', [SpecialistController::class, 'store'])->name('admin.specialists.store');
+    Route::get('/specialists/{specialist}/edit', [SpecialistController::class, 'edit'])->name('admin.specialists.edit');
+    Route::put('/specialists/{specialist}', [SpecialistController::class, 'update'])->name('admin.specialists.update');
+    Route::delete('/specialists/{specialist}', [SpecialistController::class, 'destroy'])->name('admin.specialists.destroy');
+
+    Route::get('/certificates', [App\Http\Controllers\Admin\GiftCertificateController::class, 'index'])
+    ->name('admin.certificates.index');
+
+Route::put('/certificates/{certificate}', [App\Http\Controllers\Admin\GiftCertificateController::class, 'update'])
+    ->name('admin.certificates.update');
+
+// Остальные роуты админки...
+Route::get('/services', [App\Http\Controllers\Admin\ServiceController::class, 'index'])
+    ->name('admin.services.index');
+
+Route::get('/staff', [App\Http\Controllers\Admin\StaffController::class, 'index'])
+    ->name('admin.staff.index');
+
+    Route::get('/appointments', [AdminAppointmentController::class, 'index'])->name('admin.appointments.index');
+    Route::patch('/appointments/{appointment}/update-status', [AdminAppointmentController::class, 'updateStatus'])
+        ->name('admin.appointments.update-status');
+    // Филиалы
+    Route::get('/branches', [BranchController::class, 'index'])->name('admin.branches.index');
+    Route::post('/branches', [BranchController::class, 'store'])->name('admin.branches.store');
+    Route::get('/branches/{branch}/edit', [BranchController::class, 'edit'])->name('admin.branches.edit');
+    Route::put('/branches/{branch}', [BranchController::class, 'update'])->name('admin.branches.update');
+    Route::delete('/branches/{branch}', [BranchController::class, 'destroy'])->name('admin.branches.destroy');
+    
+    // Сотрудники
+    Route::get('/staff', [StaffController::class, 'index'])->name('admin.staff.index');
+    Route::get('/staff/create', [StaffController::class, 'create'])->name('admin.staff.create');
+    Route::post('/staff', [StaffController::class, 'store'])->name('admin.staff.store');
+    Route::get('/staff/{staff}/edit', [StaffController::class, 'edit'])->name('admin.staff.edit');
+    Route::put('/staff/{staff}', [StaffController::class, 'update'])->name('admin.staff.update');
+    Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('admin.staff.destroy');
 
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function() {
     
-    Route::get('/export/appointments', [\App\Http\Controllers\ExportController::class, 'exportAllAppointments'])
-        ->name('export.appointments');
-        
-    Route::get('/export/new-appointments', [\App\Http\Controllers\ExportController::class, 'exportNewAppointments'])
-        ->name('export.new-appointments');
+
 });
 
 
@@ -75,7 +122,7 @@ Route::get('/showspecialists/{specialist}', [SpecialistIndexController::class, '
 Route::get('/staff/{staff}', [StaffIndexController::class, 'show'])->name('staff.show');
 
 Route::middleware(['auth'])->group(function () {
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
 
 
@@ -113,57 +160,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('auth');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
-
-
-
-    Route::prefix('admin/services')->group(function() {
-        Route::get('/', [ServiceController::class, 'index'])->name('admin.services.index');
-        Route::post('/', [ServiceController::class, 'store'])->name('admin.services.store');
-        Route::get('/{service}/edit', [ServiceController::class, 'edit'])->name('admin.services.edit');
-        Route::put('/{service}', [ServiceController::class, 'update'])->name('admin.services.update');
-        Route::delete('/{service}', [ServiceController::class, 'destroy'])->name('admin.services.destroy');
-    });
-
-    Route::get('/admin/specialists', [SpecialistController::class, 'index'])->name('admin.specialists.index');
-    Route::get('/admin/specialists/create', [SpecialistController::class, 'create'])->name('admin.specialists.create');
-    Route::post('/admin/specialists', [SpecialistController::class, 'store'])->name('admin.specialists.store');
-    Route::get('/admin/specialists/{specialist}/edit', [SpecialistController::class, 'edit'])->name('admin.specialists.edit');
-    Route::put('/admin/specialists/{specialist}', [SpecialistController::class, 'update'])->name('admin.specialists.update');
-    Route::delete('/admin/specialists/{specialist}', [SpecialistController::class, 'destroy'])->name('admin.specialists.destroy');
-
-    Route::prefix('admin')->group(function() {
-
-        Route::get('/certificates', [App\Http\Controllers\Admin\GiftCertificateController::class, 'index'])
-        ->name('admin.certificates.index');
-    
-    Route::put('/certificates/{certificate}', [App\Http\Controllers\Admin\GiftCertificateController::class, 'update'])
-        ->name('admin.certificates.update');
-    
-    // Остальные роуты админки...
-    Route::get('/services', [App\Http\Controllers\Admin\ServiceController::class, 'index'])
-        ->name('admin.services.index');
-    
-    Route::get('/staff', [App\Http\Controllers\Admin\StaffController::class, 'index'])
-        ->name('admin.staff.index');
-
-        Route::get('/appointments', [AdminAppointmentController::class, 'index'])->name('admin.appointments.index');
-        Route::patch('/appointments/{appointment}/update-status', [AdminAppointmentController::class, 'updateStatus'])
-            ->name('admin.appointments.update-status');
-        // Филиалы
-        Route::get('/branches', [BranchController::class, 'index'])->name('admin.branches.index');
-        Route::post('/branches', [BranchController::class, 'store'])->name('admin.branches.store');
-        Route::get('/branches/{branch}/edit', [BranchController::class, 'edit'])->name('admin.branches.edit'); // Исправлено
-        Route::put('/branches/{branch}', [BranchController::class, 'update'])->name('admin.branches.update');
-        Route::delete('/branches/{branch}', [BranchController::class, 'destroy'])->name('admin.branches.destroy');
-        
-        // Сотрудники
-        Route::get('/staff', [StaffController::class, 'index'])->name('admin.staff.index');
-        Route::get('/staff/create', [StaffController::class, 'create'])->name('admin.staff.create');
-        Route::post('/staff', [StaffController::class, 'store'])->name('admin.staff.store');
-        Route::get('/staff/{staff}/edit', [StaffController::class, 'edit'])->name('admin.staff.edit'); // Исправлено
-        Route::put('/staff/{staff}', [StaffController::class, 'update'])->name('admin.staff.update');
-        Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('admin.staff.destroy');
-    });
 
 
 });
@@ -214,11 +210,6 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('status', 'Новая ссылка отправлена!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-// Регистрация
-Route::middleware('guest')->group(function () {
-    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-    Route::post('/register', [RegisterController::class, 'register']);
-});
 
 
 // Маршруты сброса пароля
@@ -283,3 +274,7 @@ Route::group(['prefix' => 'answers'], function () {
     Route::put('/{answer}', [ServiceAnswerController::class, 'update'])->name('services.answers.update');
     Route::delete('/{answer}', [ServiceAnswerController::class, 'destroy'])->name('services.answers.destroy');
 });
+
+
+
+

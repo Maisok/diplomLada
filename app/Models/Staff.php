@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Staff extends Authenticatable
 {
+    use HasFactory;
+
     protected $fillable = [
         'first_name',
         'last_name',
