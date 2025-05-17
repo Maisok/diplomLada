@@ -103,6 +103,10 @@
                         <a href="{{route('register')}}" class="text-sm text-[#8b5f4d] hover:underline">Нет аккаунта? Зарегистрироваться</a>
                     </div>
 
+                    <div class="text-center mt-4">
+                        <a href="{{route('staff.login')}}" class="text-sm text-[#8b5f4d] hover:underline">Сотрудник?</a>
+                    </div>
+
                     <div class="mt-8 text-center">
                         <p class="text-sm text-gray-600 mb-4">Или войдите через</p>
                         <a href="{{ route('auth.yandex') }}" 
