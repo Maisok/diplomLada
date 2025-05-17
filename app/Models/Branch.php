@@ -11,7 +11,8 @@ class Branch extends Model
 
     protected $fillable = [
         'name', 'address', 'phone', 'email', 'image',
-        'work_time_start', 'work_time_end'
+        'work_time_start', 'work_time_end',
+        'is_active'
     ];
 
     protected $casts = [

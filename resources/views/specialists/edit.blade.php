@@ -36,7 +36,13 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                <!-- Image Input -->
+                <div class="form-group">
+                    <label for="is_active">Статус</label>
+                    <select name="is_active" id="is_active" class="form-control">
+                        <option value="1" {{ old('is_active', $service->is_active ?? true) ? 'selected' : '' }}>Активный</option>
+                        <option value="0" {{ old('is_active', $service->is_active ?? false) ? 'selected' : '' }}>Неактивный</option>
+                    </select>
+                </div>
                 <div>
                     <label class="sr-only" for="image">Изображение</label>
                     <input type="file" id="image" name="image" class="w-full px-4 py-2 rounded-full border border-gray-300 text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-200">

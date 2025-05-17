@@ -171,6 +171,7 @@ class BranchController extends Controller
                 'date_format:H:i',
                 'after:work_time_start'
             ],
+            'is_active' => 'nullable|boolean',
         ], [
             'name.required' => 'Название филиала обязательно для заполнения',
             'name.max' => 'Название не должно превышать ' . Branch::MAX_NAME_LENGTH . ' символов',
@@ -212,6 +213,7 @@ class BranchController extends Controller
             $data['image'] = 'storage/' . $path;
         }
 
+        $branch->is_active = $request->has('is_active');
         $branch->update($data);
 
         return response()->json([

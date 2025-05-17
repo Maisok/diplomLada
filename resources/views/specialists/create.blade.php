@@ -43,6 +43,14 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
+
+                <div class="form-group">
+                    <label for="is_active">Статус</label>
+                    <select name="is_active" id="is_active" class="form-control">
+                        <option value="1" {{ old('is_active', $service->is_active ?? true) ? 'selected' : '' }}>Активный</option>
+                        <option value="0" {{ old('is_active', $service->is_active ?? false) ? 'selected' : '' }}>Неактивный</option>
+                    </select>
+                </div>
                 <!-- Submit Button -->
                 <button type="submit" class="w-full bg-blue-100 text-blue-800 font-semibold py-2 rounded-full shadow-md hover:bg-blue-200 mt-4">
                     Добавить

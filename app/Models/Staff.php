@@ -17,7 +17,8 @@ class Staff extends Authenticatable
         'image',
         'branch_id',
         'login',
-        'password'
+        'password',
+        'is_active' // добавлено
     ];
 
     protected $hidden = [

@@ -13,6 +13,7 @@ class Service extends Model
         'name',
         'image',
         'price',
+        'is_active' // добавлено
     ];
     
     // Максимальные длины полей для валидации

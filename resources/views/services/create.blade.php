@@ -86,6 +86,14 @@
                     <input type="file" id="image" name="image" class="form-input" style="padding: 0.5rem 0;">
                     @error('image')<p class="error-text">{{ $message }}</p>@enderror
                 </div>
+
+                <div class="form-group">
+                    <label for="is_active">Статус</label>
+                    <select name="is_active" id="is_active" class="form-control">
+                        <option value="1" {{ old('is_active', $service->is_active ?? true) ? 'selected' : '' }}>Активный</option>
+                        <option value="0" {{ old('is_active', $service->is_active ?? false) ? 'selected' : '' }}>Неактивный</option>
+                    </select>
+                </div>
                 
                 <button type="submit" class="submit-btn">Добавить</button>
             </form>

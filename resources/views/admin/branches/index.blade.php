@@ -229,6 +229,18 @@
                             </p>
                         </div>
 
+
+                        <div class="mt-4 pt-4 border-t border-gray-100">
+                            <h4 class="text-sm font-medium text-gray-500 mb-2">Статус:</h4>
+                            <div>
+                                @if($branch->is_active)
+                                <span class="text-gray-400 text-sm">Открыто</span>
+                                @else
+                                <span class="text-gray-400 text-sm">Закрыто</span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="mt-4 pt-4 border-t border-gray-100">
                             <h4 class="text-sm font-medium text-gray-500 mb-2">Сотрудники:</h4>
                             <div>
@@ -278,6 +290,13 @@
                             pattern="8\s\d{3}\s\d{3}\s\d{2}\s\d{2}"
                             placeholder="8 888 888 88 88"
                             required>
+                        </div>
+                        <div class="form-group">
+                            <label for="is_active">Статус</label>
+                            <select name="is_active" id="is_active" class="form-control">
+                                <option value="1" {{ old('is_active', $service->is_active ?? true) ? 'selected' : '' }}>Активный</option>
+                                <option value="0" {{ old('is_active', $service->is_active ?? false) ? 'selected' : '' }}>Неактивный</option>
+                            </select>
                         </div>
                         <div>
                             <label for="create-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
@@ -344,6 +363,13 @@
                             pattern="8\s\d{3}\s\d{3}\s\d{2}\s\d{2}"
                             placeholder="8 888 888 88 88"
                             required>
+                        </div>
+                        <div class="form-group">
+                            <label for="is_active">Статус</label>
+                            <select name="is_active" id="is_active" class="form-control">
+                                <option value="1" {{ old('is_active', $branch->is_active ?? true) ? 'selected' : '' }}>Активный</option>
+                                <option value="0" {{ old('is_active', $branch->is_active ?? false) ? 'selected' : '' }}>Неактивный</option>
+                            </select>
                         </div>
                         <div>
                             <label for="edit-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>

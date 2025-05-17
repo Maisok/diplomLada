@@ -152,6 +152,12 @@
                                 <h3 class="text-xl font-semibold">{{ $employee->first_name }} {{ $employee->last_name }}</h3>
                                 <p class="text-gray-600">{{ $employee->position }}</p>
                                 <p class="text-sm text-gray-500 mt-1">Логин: {{ $employee->login }}</p>
+                        
+                                        @if($employee->is_active)
+                                        <p class="text-sm text-gray-500 mt-1">Работает</p>
+                                        @else
+                                        <p class="text-sm text-gray-500 mt-1">Не работает</p>
+                                        @endif
                             </div>
                         </div>
 
@@ -204,6 +210,13 @@
                                 @foreach($branches as $branch)
                                     <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                                 @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="is_active">Статус</label>
+                            <select name="is_active" id="is_active" class="form-control">
+                                <option value="1" {{ old('is_active', $service->is_active ?? true) ? 'selected' : '' }}>Активный</option>
+                                <option value="0" {{ old('is_active', $service->is_active ?? false) ? 'selected' : '' }}>Неактивный</option>
                             </select>
                         </div>
                         <div>
@@ -281,6 +294,13 @@
                                 @foreach($branches as $branch)
                                     <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                                 @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="is_active">Статус</label>
+                            <select name="is_active" id="is_active" class="form-control">
+                                <option value="1" {{ old('is_active', $service->is_active ?? true) ? 'selected' : '' }}>Активный</option>
+                                <option value="0" {{ old('is_active', $service->is_active ?? false) ? 'selected' : '' }}>Неактивный</option>
                             </select>
                         </div>
                         <div>

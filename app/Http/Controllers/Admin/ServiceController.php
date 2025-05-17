@@ -55,6 +55,7 @@ class ServiceController extends Controller
             ],
             'staff' => 'nullable|array',
             'staff.*' => 'exists:staff,id',
+            'is_active' => 'nullable|boolean',
         ], [
             'name.required' => 'Название услуги обязательно для заполнения',
             'name.max' => 'Название не должно превышать 50 символов',
@@ -81,6 +82,7 @@ class ServiceController extends Controller
         $service = new Service();
         $service->name = $request->name;
         $service->price = $request->price;
+        $service->is_active = $request->is_active;
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('services', 'public');
@@ -121,6 +123,7 @@ class ServiceController extends Controller
                 'max:2048',
                 'dimensions:max_width=2000,max_height=2000'
             ],
+            'is_active' => 'nullable|boolean',
             'staff' => 'nullable|array',
             'staff.*' => 'exists:staff,id',
         ], [
@@ -148,6 +151,7 @@ class ServiceController extends Controller
 
         $service->name = $request->name;
         $service->price = $request->price;
+        $service->is_active = $request->is_active;
 
         if ($request->hasFile('image')) {
             if ($service->image) {

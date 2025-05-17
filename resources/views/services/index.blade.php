@@ -178,6 +178,12 @@
                             <p class="text-gray-600">{{ $service->price }} ₽</p>
                         </div>
 
+                        @if($service->is_active)
+                        <p class="text-sm text-gray-500 mt-1">Работает</p>
+                        @else
+                        <p class="text-sm text-gray-500 mt-1">Не работает</p>
+                        @endif
+
                         <div class="mt-4 pt-4 border-t border-gray-100">
                             <h4 class="text-sm font-medium text-gray-500 mb-2">Прикрепленные сотрудники:</h4>
                             <div>
@@ -228,6 +234,13 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label for="is_active">Статус</label>
+                            <select name="is_active" id="is_active" class="form-control">
+                                <option value="1" {{ old('is_active', $service->is_active ?? true) ? 'selected' : '' }}>Активный</option>
+                                <option value="0" {{ old('is_active', $service->is_active ?? false) ? 'selected' : '' }}>Неактивный</option>
+                            </select>
+                        </div>
                         <div>
                             <label for="create-image" class="block text-sm font-medium text-gray-700 mb-1">Изображение</label>
                             <input type="file" id="create-image" name="image" class="form-input w-full px-3 py-2 rounded-md">
@@ -263,6 +276,13 @@
                         <div>
                             <label for="edit-name" class="block text-sm font-medium text-gray-700 mb-1">Название</label>
                             <input type="text" id="edit-name" name="name" class="form-input w-full px-3 py-2 rounded-md" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="is_active">Статус</label>
+                            <select name="is_active" id="is_active" class="form-control">
+                                <option value="1" {{ old('is_active', $service->is_active ?? true) ? 'selected' : '' }}>Активный</option>
+                                <option value="0" {{ old('is_active', $service->is_active ?? false) ? 'selected' : '' }}>Неактивный</option>
+                            </select>
                         </div>
                         <div>
                             <label for="edit-price" class="block text-sm font-medium text-gray-700 mb-1">Цена (₽)</label>
