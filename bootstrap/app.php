@@ -33,10 +33,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
             'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
             'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-            'staff' => \App\Http\Middleware\RedirectIfNotStaff::class,
             'PDF' => Barryvdh\DomPDF\Facade::class,
             'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
-                'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'auth.staff' => \App\Http\Middleware\RedirectIfNotStaff::class,
+            'auth.user' => \App\Http\Middleware\RedirectIfNotUser::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

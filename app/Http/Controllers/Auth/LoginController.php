@@ -16,6 +16,10 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        if (Auth::guard('staff')->check()) {
+            Auth::guard('staff')->logout();
+        }
+
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'email:rfc,dns', 'max:100'],
             'password' => ['required', 'string', 'max:255'],
@@ -30,6 +34,7 @@ class LoginController extends Controller
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
+
 
         $credentials = $request->only('email', 'password');
 

@@ -13,29 +13,38 @@ class StaffAuthController extends Controller
 {
     public function showLoginForm()
     {
+
+        if (Auth::guard('staff')->check()) {
+            return redirect()->route('staff.dashboard');
+        }
+        
         return view('staff.auth.login');
     } 
 
     public function login(Request $request)
     {
+        if (Auth::guard('web')->check()) {
+            Auth::guard('web')->logout();
+        }
+    
         $validator = Validator::make($request->all(), [
             'login' => 'required|digits:5',
             'password' => 'required|string|min:8',
         ]);
-        
-
+    
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
-
+    
         $credentials = $request->only('login', 'password');
-
+    
         if (Auth::guard('staff')->attempt($credentials, $request->remember)) {
-            return redirect()->intended(route('staff.dashboard'));
+            \Log::info('Staff logged in', ['staff' => Auth::guard('staff')->user()]);
+            return redirect()->route('staff.dashboard');
         }
-
+    
         return redirect()->back()
             ->withInput($request->only('login', 'remember'))
             ->withErrors(['login' => 'Неверные учетные данные']);

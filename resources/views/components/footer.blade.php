@@ -1,36 +1,65 @@
 <footer class="bg-[#1a1a1a] text-white py-12">
     <div class="container mx-auto px-6">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <!-- Логотип и описание -->
             <div>
-                <h3 class="text-xl font-semibold mb-4">Beauty Bar</h3>
-                <p class="text-gray-400">Совершенный подход к вашей красоте</p>
+                <h3 class="text-2xl font-bold mb-4">Beauty Bar</h3>
+                <p class="text-gray-400 max-w-xs">
+                    Совершенный подход к вашей красоте и уходу. Мы любим делать вас еще красивее.
+                </p>
             </div>
+
+            <!-- Навигация -->
             <div>
-                <h4 class="font-medium mb-4">Услуги</h4>
+                <h4 class="text-lg font-semibold mb-4">Навигация</h4>
                 <ul class="space-y-2">
-                    <li><a href="#" class="text-gray-400 hover:text-white transition">Уход за лицом</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-white transition">Массаж</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-white transition">Уход за телом</a></li>
+                    <li><a href="{{ route('welcome') }}" class="hover:text-pink-400 transition">Главная</a></li>
+                    <li class="relative">
+                        <a href="{{ route('services') }}" class="hover:text-pink-400 transition flex items-center">
+                            Услуги
+                            @auth
+                                @if(auth()->user()->unreadQuestionNotifications()->exists())
+                                    <span class="ml-2 inline-block h-2 w-2 rounded-full bg-red-500 animate-pulse"></span>
+                                @endif
+                            @endauth
+                        </a>
+                    </li>
                 </ul>
             </div>
+
+            <!-- Аккаунт -->
             <div>
-                <h4 class="font-medium mb-4">Контакты</h4>
-                <ul class="space-y-2 text-gray-400">
-                    <li>г. Москва, ул. Примерная, 123</li>
-                    <li>+7 (123) 456-78-90</li>
-                    <li>info@beautybar.ru</li>
+                <h4 class="text-lg font-semibold mb-4">Аккаунт</h4>
+                <ul class="space-y-2">
+                    @guest
+                        <li><a href="{{ route('login') }}" class="hover:text-pink-400 transition">Войти</a></li>
+                        <li><a href="{{ route('register') }}" class="hover:text-pink-400 transition">Регистрация</a></li>
+                    @endguest
+
+                    @auth
+                        <li><a href="{{ route('dashboard') }}" class="hover:text-pink-400 transition">Личный кабинет</a></li>
+                        @if(auth()->user()->role === 'admin')
+                            <li><a href="{{ route('admin.dashboard') }}" class="hover:text-pink-400 transition">Админка</a></li>
+                        @endif
+                        <li>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="text-left hover:text-pink-400 transition w-full text-left">
+                                    Выйти
+                                </button>
+                            </form>
+                        </li>
+                    @endauth
                 </ul>
             </div>
-            <div>
-                <h4 class="font-medium mb-4">Часы работы</h4>
-                <ul class="space-y-2 text-gray-400">
-                    <li>Пн-Пт: 10:00 - 21:00</li>
-                    <li>Сб-Вс: 11:00 - 20:00</li>
-                </ul>
-            </div>
+    
+
         </div>
+
+        <!-- Подпись внизу -->
         <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-            <p>© 2023 Beauty Bar. Все права защищены.</p>
+            <p>© 2025 Beauty Bar. Все права защищены.</p>
         </div>
     </div>
 </footer>

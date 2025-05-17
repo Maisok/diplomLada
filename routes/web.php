@@ -34,7 +34,6 @@ use App\Models\Service;
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function() {
 
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
-
     Route::prefix('/services')->group(function() {
         Route::get('/', [ServiceController::class, 'index'])->name('admin.services.index');
         Route::post('/', [ServiceController::class, 'store'])->name('admin.services.store');
@@ -42,13 +41,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::put('/{service}', [ServiceController::class, 'update'])->name('admin.services.update');
         Route::delete('/{service}', [ServiceController::class, 'destroy'])->name('admin.services.destroy');
     });
-
-    Route::get('/export/appointments', [\App\Http\Controllers\ExportController::class, 'exportAllAppointments'])
-    ->name('export.appointments');
-    
-    Route::get('/export/new-appointments', [\App\Http\Controllers\ExportController::class, 'exportNewAppointments'])
-        ->name('export.new-appointments');
-    
+    Route::get('/export/appointments', [\App\Http\Controllers\ExportController::class, 'exportAllAppointments'])->name('export.appointments');
+    Route::get('/export/new-appointments', [\App\Http\Controllers\ExportController::class, 'exportNewAppointments'])->name('export.new-appointments');
     Route::get('/specialists', [SpecialistController::class, 'index'])->name('admin.specialists.index');
     Route::get('/specialists/create', [SpecialistController::class, 'create'])->name('admin.specialists.create');
     Route::post('/specialists', [SpecialistController::class, 'store'])->name('admin.specialists.store');
@@ -56,30 +50,20 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::put('/specialists/{specialist}', [SpecialistController::class, 'update'])->name('admin.specialists.update');
     Route::delete('/specialists/{specialist}', [SpecialistController::class, 'destroy'])->name('admin.specialists.destroy');
 
-    Route::get('/certificates', [App\Http\Controllers\Admin\GiftCertificateController::class, 'index'])
-    ->name('admin.certificates.index');
-
-Route::put('/certificates/{certificate}', [App\Http\Controllers\Admin\GiftCertificateController::class, 'update'])
-    ->name('admin.certificates.update');
-
-// Остальные роуты админки...
-Route::get('/services', [App\Http\Controllers\Admin\ServiceController::class, 'index'])
-    ->name('admin.services.index');
-
-Route::get('/staff', [App\Http\Controllers\Admin\StaffController::class, 'index'])
-    ->name('admin.staff.index');
-
+    Route::get('/certificates', [App\Http\Controllers\Admin\GiftCertificateController::class, 'index'])->name('admin.certificates.index');
+    Route::put('/certificates/{certificate}', [App\Http\Controllers\Admin\GiftCertificateController::class, 'update'])->name('admin.certificates.update');
+    Route::get('/services', [App\Http\Controllers\Admin\ServiceController::class, 'index'])->name('admin.services.index');
+    Route::get('/staff', [App\Http\Controllers\Admin\StaffController::class, 'index'])->name('admin.staff.index');
     Route::get('/appointments', [AdminAppointmentController::class, 'index'])->name('admin.appointments.index');
-    Route::patch('/appointments/{appointment}/update-status', [AdminAppointmentController::class, 'updateStatus'])
-        ->name('admin.appointments.update-status');
-    // Филиалы
+    Route::patch('/appointments/{appointment}/update-status', [AdminAppointmentController::class, 'updateStatus'])->name('admin.appointments.update-status');
+
     Route::get('/branches', [BranchController::class, 'index'])->name('admin.branches.index');
     Route::post('/branches', [BranchController::class, 'store'])->name('admin.branches.store');
     Route::get('/branches/{branch}/edit', [BranchController::class, 'edit'])->name('admin.branches.edit');
     Route::put('/branches/{branch}', [BranchController::class, 'update'])->name('admin.branches.update');
     Route::delete('/branches/{branch}', [BranchController::class, 'destroy'])->name('admin.branches.destroy');
     
-    // Сотрудники
+
     Route::get('/staff', [StaffController::class, 'index'])->name('admin.staff.index');
     Route::get('/staff/create', [StaffController::class, 'create'])->name('admin.staff.create');
     Route::post('/staff', [StaffController::class, 'store'])->name('admin.staff.store');
@@ -87,26 +71,6 @@ Route::get('/staff', [App\Http\Controllers\Admin\StaffController::class, 'index'
     Route::put('/staff/{staff}', [StaffController::class, 'update'])->name('admin.staff.update');
     Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('admin.staff.destroy');
 
-});
-
-Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function() {
-    
-
-});
-
-
-Route::middleware(['staff.auth'])->group(function () {
-});
-
-
-
-Route::middleware(['auth', 'verified'])->group(function () {
-  
-});
-
-// Только для гостей
-Route::middleware(['guest'])->group(function () {
-   
 });
 
 Route::get('/', function () {
@@ -127,50 +91,30 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-
-    Route::get('/profile/verify-email/{token}', [ProfileController::class, 'verifyEmailChange'])
-    ->name('profile.verify-email');
-
-    Route::post('/profile/verify-email/resend', [ProfileController::class, 'resendVerificationEmail'])
-    ->name('profile.verify-email.resend');
-
-
-
+    Route::get('/profile/verify-email/{token}', [ProfileController::class, 'verifyEmailChange'])->name('profile.verify-email');
+    Route::post('/profile/verify-email/resend', [ProfileController::class, 'resendVerificationEmail'])->name('profile.verify-email.resend');
     Route::get('/services', [ServiceIndexController::class, 'index'])->name('services.index');
-    Route::get('/services/{service}', [ServiceIndexController::class, 'show'])->name('services.show');
     Route::get('/services/{service}/staff', [ServiceIndexController::class, 'getStaff'])->name('services.staff');
     Route::get('/services/{service}/times', [ServiceIndexController::class, 'getAvailableTimes'])->name('services.times');
-    Route::post('/services/{service}/appointments', [ServiceIndexController::class, 'storeAppointment'])
-        ->name('services.store-appointment')
-        ->middleware('auth');
-
-        Route::patch('/appointments/{appointment}/cancel', [DashboardController::class, 'cancel'])
-    ->name('appointments.cancel')
-    ->middleware('auth');
-
+    Route::post('/services/{service}/appointments', [ServiceIndexController::class, 'storeAppointment'])->name('services.store-appointment');
+    Route::patch('/appointments/{appointment}/cancel', [DashboardController::class, 'cancel'])->name('appointments.cancel');
     Route::delete('/profile/delete', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-  
-
-
     Route::get('/staff/{staff}/appointment', [NewAppointmentController::class, 'create'])->name('appointment.create');
     Route::post('/staff/{staff}/appointment', [NewAppointmentController::class, 'store'])->name('appointment.store');
-  
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('auth');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
-
-
+    Route::post('/gift-certificates', [DashboardController::class, 'storeCertificate'])->name('gift-certificates.store');
+    Route::get('/gift-certificates/{certificate}/download', [DashboardController::class, 'downloadCertificate'])->name('gift-certificates.download');
+    Route::get('/gift-certificates/verify/{code}', [DashboardController::class, 'verify'])->name('gift-certificates.verify');
+    Route::get('/gift-certificates/verify/{code}', [DashboardController::class, 'verify'])->name('gift-certificates.verify');
 });
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     Route::post('/register', [RegisterController::class, 'register']);
-
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login']);
-
 });
 
 
@@ -211,8 +155,6 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 
-
-// Маршруты сброса пароля
 Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])
     ->middleware('guest')
     ->name('password.request');
@@ -230,32 +172,20 @@ Route::post('/reset-password', [NewPasswordController::class, 'store'])
     ->name('password.update');
 
 
-    Route::middleware('auth')->group(function () {
-        Route::post('/gift-certificates', [DashboardController::class, 'storeCertificate'])->name('gift-certificates.store');
-        Route::get('/gift-certificates/{certificate}/download', [DashboardController::class, 'downloadCertificate'])->name('gift-certificates.download');
-        Route::get('/gift-certificates/verify/{code}', [DashboardController::class, 'verify'])
-    ->name('gift-certificates.verify');
-    Route::get('/gift-certificates/verify/{code}', [DashboardController::class, 'verify'])
-    ->name('gift-certificates.verify');
-    });
 
 Route::prefix('staffauth')->name('staff.')->group(function () {
-    // Аутентификация
     Route::get('/login', [StaffAuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [StaffAuthController::class, 'login'])->name('login.post');
     Route::post('/logout', [StaffAuthController::class, 'logout'])->name('logout');
-    
-    // Защищенные маршруты
-    Route::middleware('staff')->group(function () {
+    Route::middleware(['auth.staff'])->group(function () {
         Route::get('/dashboard', [StaffDashboardController::class, 'index'])->name('dashboard');
         Route::get('/appointments', [StaffAppointmentController::class, 'index'])->name('appointments.index');
         Route::get('/clients', [StaffClientController::class, 'index'])->name('clients.index');
         Route::get('/services', [StaffServiceController::class, 'index'])->name('services.index');
+        Route::put('/staffauth/appointments/{appointment}/status', [StaffAppointmentController::class, 'updateStatus'])->name('staff.appointments.updateStatus');
     });
 });
 
-Route::put('/staffauth/appointments/{appointment}/status', [StaffAppointmentController::class, 'updateStatus'])
-    ->name('staff.appointments.updateStatus');
 
 
 Route::group(['prefix' => 'questions'], function () {

@@ -166,6 +166,9 @@ class RegisterController extends Controller
    
     public function yandexRedirect()
     {
+        if (Auth::guard('staff')->check()) {
+            Auth::guard('staff')->logout();
+        }
         try {
             $socialite = Socialite::driver('yandex');
             $socialite->setHttpClient(new \GuzzleHttp\Client([
@@ -202,7 +205,7 @@ class RegisterController extends Controller
             }
 
             Auth::login($user, true);
-            return redirect()->route('main');
+            return redirect()->route('welcome');
 
         } catch (\Exception $e) {
             \Log::error('Yandex auth error: '.$e->getMessage());

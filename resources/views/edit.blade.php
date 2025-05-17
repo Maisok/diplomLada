@@ -215,10 +215,6 @@
                             Вернуться в профиль
                         </a>
                     </div>
-
-                    <button type="button" onclick="openDeleteModal()" class="delete-account-btn">
-                        Удалить аккаунт
-                    </button>
                 </form>
 
                 @if(session('email_change'))
